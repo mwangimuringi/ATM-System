@@ -1,38 +1,26 @@
 package Lecture4_interfaces_abstract_classes;
 
-
 import org.jetbrains.annotations.NotNull;
-
 import java.util.Calendar;
 
 public class WithdrawalTransaction extends BaseTransaction {
+
     public WithdrawalTransaction(int amount, @NotNull Calendar date) {
         super(amount, date);
     }
 
-// Method to check if the withdrawal amount is valid (non-negative)
-private boolean checkWithdrawalAmount(double amt) {
-    return amt >= 0;
-}
+    private boolean checkWithdrawalAmount(double amt) {
+        return amt >= 0;
+    }
 
-    // Method to reverse the transaction
-    public boolean reverse() {
-        return true;
-    } // return true if reversal was successful
-
-    /*
-    Oportunity for assignment: implementing different form of withdrawal
-     */
     public void apply(BankAccount ba) {
         double currentBalance = ba.getBalance();
 
-        // Ensure the withdrawal amount is positive
         if (!checkWithdrawalAmount(getAmount())) {
             System.out.println("Invalid withdrawal amount.");
             return;
         }
 
-        // Check if there are sufficient funds for the withdrawal
         if (currentBalance >= getAmount()) {
             double newBalance = currentBalance - getAmount();
             ba.setBalance(newBalance);
@@ -42,7 +30,6 @@ private boolean checkWithdrawalAmount(double amt) {
         }
     }
 
-    // Method to print the transaction details
     public void printTransactionDetails() {
         System.out.println("Withdrawal Transaction:");
         System.out.println("Amount: " + getAmount());
@@ -50,7 +37,12 @@ private boolean checkWithdrawalAmount(double amt) {
         System.out.println("Transaction ID: " + getTransactionID());
     }
 
-    /*
-    Assignment 1 Q3: Write the Reverse method - a method unique to the WithdrawalTransaction Class
-     */
+    // Reverse method to create a ReversalTransaction
+    public ReversalTransaction reverse(BankAccount ba) {
+        double currentBalance = ba.getBalance();
+        ba.setBalance(currentBalance + getAmount());
+
+        // Create a reversal transaction with a double amount
+        return new ReversalTransaction(getAmount(), getDate());
+    }
 }
