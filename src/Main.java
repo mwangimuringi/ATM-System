@@ -1,4 +1,5 @@
 import Lecture1_adt.*; // Import all classes from Lecture1_adt package to be used in this client code
+import Lecture4_interfaces_abstract_classes.*;
 
 import java.util.Calendar;
 import java.util.GregorianCalendar;
@@ -44,7 +45,6 @@ public class Main {
         Calendar d1 = new GregorianCalendar();
 
         Lecture1_adt.Transaction2 t = new Lecture1_adt.Transaction2(1000, d1);
-
         Lecture1_adt.Transaction2 modified_t = makeNextPayment(t);
 
         System.out.println("\n\nState of the Object T1 After Client Code Tried to Change the Amount");
@@ -70,8 +70,6 @@ public class Main {
 
         List<Transaction3> listOfTransaction3s = new ArrayList<Transaction3>();
         Calendar date = new GregorianCalendar(2024, Calendar.JANUARY, 3);
-
-
         for (int i = 0; i < 12; i++) {
             listOfTransaction3s.add(new Transaction3(amount, date));
             date.add(Calendar.MONTH, 1);
@@ -83,11 +81,8 @@ public class Main {
     Testing Transaction3 class
      */
     public static void testTransaction3() {
-
         List<Transaction3> allPaymentsIn2024 = makeYearOfPayments(1000);
-
         for (Transaction3 t3 : allPaymentsIn2024) {
-
             // Display all the 12 Transactions
             for (Transaction3 transact : allPaymentsIn2024) {
                 System.out.println("\n\n  ::::::::::::::::::::::::::::::::::::::::::::\n");
@@ -114,7 +109,6 @@ public class Main {
         List<Transaction4> listOfTransaction4s = new ArrayList<Transaction4>();
         Calendar date = new GregorianCalendar(2024, Calendar.JANUARY, 3);
 
-
         for (int i = 0; i < 12; i++) {
             listOfTransaction4s.add(new Transaction4(amount, date));
             date.add(Calendar.MONTH, 1);
@@ -126,21 +120,35 @@ public class Main {
     Testing Transaction3 class
      */
     public static void testTransaction4() {
-
-        /*
-         * Call the function to make all the Twelve transaction in a year of our business
-         */
-
         List<Transaction4> transactionsIn2024 = makeYearOfPaymentsFinal(1200);
-
-        // Display all the 12 Transactions
         for (Transaction4 transact : transactionsIn2024) {
             System.out.println("\n\n  ::::::::::::::::::::::::::::::::::::::::::::\n");
             System.out.println("Lecture1_adt.TransactionInterface Amount: \t "+transact.getAmount());
             System.out.println("Lecture1_adt.TransactionInterface Date: \t "+transact.getDate().getTime());
         }
+    }
+    // New method to test Withdrawal and Reversal Transactions with BankAccount
+    public static void testWithdrawalAndReversal() {
+        // Create a BankAccount with an initial balance of 5000
+        BankAccount bankAccount = new BankAccount(5000);
+        bankAccount.printBalance(); // Initial balance
 
-        // Please Take a look at all the 12 transaction now and compare with the outputs of the Transaction3 class
+        // Create a WithdrawalTransaction of 1000
+        Calendar d1 = new GregorianCalendar();
+        WithdrawalTransaction withdrawal = new WithdrawalTransaction(1000, d1);
+
+        // Apply the withdrawal to the account
+        bankAccount.applyTransaction(withdrawal);
+        System.out.println("\nAfter Withdrawal:");
+        bankAccount.printBalance(); // Balance after withdrawal
+
+        // Create a reversal of the withdrawal transaction
+        ReversalTransaction reversal = withdrawal.reverse(bankAccount);
+
+        // Apply the reversal transaction to the account
+        bankAccount.applyTransaction(reversal);
+        System.out.println("\nAfter Reversal:");
+        bankAccount.printBalance(); // Balance after reversal
     }
 
 
@@ -152,5 +160,7 @@ public class Main {
         // testTransaction2()
         // testTransaction3()
         // testTransaction4()
+
+        testWithdrawalAndReversal();
     }
 }

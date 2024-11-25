@@ -43,6 +43,6 @@ public class WithdrawalTransaction extends BaseTransaction {
         ba.setBalance(currentBalance + getAmount());
 
         // Create a reversal transaction with a double amount
-        return new ReversalTransaction(getAmount(), getDate());
+        return new ReversalTransaction(this.getAmount(), this.getDate());
     }
 }
