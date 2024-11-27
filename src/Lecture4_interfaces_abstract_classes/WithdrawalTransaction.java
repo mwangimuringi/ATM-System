@@ -12,8 +12,12 @@ public class WithdrawalTransaction extends BaseTransaction {
     private boolean checkWithdrawalAmount(double amt) {
         return amt >= 0;
     }
-
+    @Override
     public void apply(BankAccount ba) {
+        apply(ba, "Standard Withdrawal"); // Default to "Standard Withdrawal" type
+    }
+
+    public void apply(BankAccount ba,  String withdrawalType) {
         double currentBalance = ba.getBalance();
 
         if (!checkWithdrawalAmount(getAmount())) {

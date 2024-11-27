@@ -133,17 +133,28 @@ public class Main {
         BankAccount bankAccount = new BankAccount(5000);
         bankAccount.printBalance(); // Initial balance
 
-        // Create a WithdrawalTransaction of 1000
+        // Create and apply a standard withdrawal
         Calendar d1 = new GregorianCalendar();
-        WithdrawalTransaction withdrawal = new WithdrawalTransaction(1000, d1);
+        WithdrawalTransaction standardWithdrawal = new WithdrawalTransaction(1000, d1);
+        standardWithdrawal.apply(bankAccount, "Standard Withdrawal");
+        System.out.println("\nAfter Standard Withdrawal:");
+        bankAccount.printBalance(); // Balance after standard withdrawal
 
-        // Apply the withdrawal to the account
-        bankAccount.applyTransaction(withdrawal);
-        System.out.println("\nAfter Withdrawal:");
-        bankAccount.printBalance(); // Balance after withdrawal
+        // Create and apply an ATM withdrawal
+        WithdrawalTransaction atmWithdrawal = new WithdrawalTransaction(500, d1);
+        atmWithdrawal.apply(bankAccount, "ATM Withdrawal");
+        System.out.println("\nAfter ATM Withdrawal:");
+        bankAccount.printBalance(); // Balance after ATM withdrawal
+
+        // Create and apply an online withdrawal
+        WithdrawalTransaction onlineWithdrawal = new WithdrawalTransaction(200, d1);
+        onlineWithdrawal.apply(bankAccount, "Online Withdrawal");
+        System.out.println("\nAfter Online Withdrawal:");
+        bankAccount.printBalance(); // Balance after online withdrawal
+
 
         // Create a reversal of the withdrawal transaction
-        ReversalTransaction reversal = withdrawal.reverse(bankAccount);
+        ReversalTransaction reversal = standardWithdrawal.reverse(bankAccount);
 
         // Apply the reversal transaction to the account
         bankAccount.applyTransaction(reversal);
@@ -156,7 +167,7 @@ public class Main {
         // This is the client code
         // Uncomment the following lines to test the class which you would like to test
 
-         //testTransaction1()
+        //testTransaction1();
         // testTransaction2()
         // testTransaction3()
         // testTransaction4()
