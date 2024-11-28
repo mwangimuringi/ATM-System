@@ -1,5 +1,6 @@
 package Lecture4_interfaces_abstract_classes;
 
+import exceptions.InsufficientFundsException;
 import org.jetbrains.annotations.NotNull;
 import java.util.Calendar;
 
@@ -27,17 +28,20 @@ public class WithdrawalTransaction extends BaseTransaction {
 
         double currentBalance = ba.getBalance();
 
-        if (!checkWithdrawalAmount(getAmount())) {
-            System.out.println("Invalid withdrawal amount.");
-            return;
-        }
+        try {
+            // If withdrawal amount is greater than balance, throw custom exception
+            if (currentBalance < getAmount()) {
+                throw new InsufficientFundsException("Insufficient funds for withdrawal.");
+            }
 
-        if (currentBalance >= getAmount()) {
+            // If amount is valid, perform the withdrawal
             double newBalance = currentBalance - getAmount();
             ba.setBalance(newBalance);
             System.out.println("Withdrawal of " + getAmount() + " (" + withdrawalType + ") applied successfully.");
-        } else {
-            System.out.println("Insufficient funds for withdrawal.");
+
+        } catch (InsufficientFundsException e) {
+            // Handle exception and print error message
+            System.out.println(e.getMessage());
         }
     }
 
