@@ -1,6 +1,6 @@
 import Lecture1_adt.*; // Import all classes from Lecture1_adt package to be used in this client code
 import Lecture4_interfaces_abstract_classes.*;
-
+import exceptions.InsufficientFundsException;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.ArrayList;
@@ -136,22 +136,41 @@ public class Main {
         // Create and apply a standard withdrawal
         Calendar d1 = new GregorianCalendar();
         WithdrawalTransaction standardWithdrawal = new WithdrawalTransaction(1000, d1);
-        standardWithdrawal.apply(bankAccount, "Standard Withdrawal");
-        System.out.println("\nAfter Standard Withdrawal:");
-        bankAccount.printBalance(); // Balance after standard withdrawal
+        try {
+            standardWithdrawal.apply(bankAccount, "Standard Withdrawal");
+            System.out.println("\nAfter Standard Withdrawal:");
+            bankAccount.printBalance(); // Balance after standard withdrawal
+        } catch (InsufficientFundsException e) {
+            System.out.println("Error: " + e.getMessage());
+        }
 
         // Create and apply an ATM withdrawal
         WithdrawalTransaction atmWithdrawal = new WithdrawalTransaction(500, d1);
-        atmWithdrawal.apply(bankAccount, "ATM Withdrawal");
-        System.out.println("\nAfter ATM Withdrawal:");
-        bankAccount.printBalance(); // Balance after ATM withdrawal
+        try {
+            atmWithdrawal.apply(bankAccount, "ATM Withdrawal");
+            System.out.println("\nAfter ATM Withdrawal:");
+            bankAccount.printBalance(); // Balance after ATM withdrawal
+        } catch (InsufficientFundsException e) {
+            System.out.println("Error: " + e.getMessage());
+        }
 
         // Create and apply an online withdrawal
         WithdrawalTransaction onlineWithdrawal = new WithdrawalTransaction(200, d1);
-        onlineWithdrawal.apply(bankAccount, "Online Withdrawal");
-        System.out.println("\nAfter Online Withdrawal:");
-        bankAccount.printBalance(); // Balance after online withdrawal
+        try {
+            onlineWithdrawal.apply(bankAccount, "Online Withdrawal");
+            System.out.println("\nAfter Online Withdrawal:");
+            bankAccount.printBalance(); // Balance after online withdrawal
+        } catch (InsufficientFundsException e) {
+            System.out.println("Error: " + e.getMessage());
+        }
 
+        // Create and apply an excess withdrawal that exceeds the balance
+        WithdrawalTransaction excessWithdrawal = new WithdrawalTransaction(10000, d1);
+        try {
+            excessWithdrawal.apply(bankAccount, "Excess Withdrawal");
+        } catch (InsufficientFundsException e) {
+            System.out.println("Error: " + e.getMessage());  // This should be triggered for exceeding balance
+        }
 
         // Create a reversal of the withdrawal transaction
         ReversalTransaction reversal = standardWithdrawal.reverse(bankAccount);
@@ -161,7 +180,6 @@ public class Main {
         System.out.println("\nAfter Reversal:");
         bankAccount.printBalance(); // Balance after reversal
     }
-
 
     public static void main(String[] args) {
         // This is the client code
